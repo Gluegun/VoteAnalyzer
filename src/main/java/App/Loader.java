@@ -1,7 +1,12 @@
+package App;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import Core.*;
+import Parser.XMLHandler;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,15 +21,17 @@ public class Loader {
     private static SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
     private static SimpleDateFormat visitDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
-    private static HashMap<Integer, WorkTime> voteStationWorkTimes = new HashMap<>();
+    private static HashMap<Integer, Core.WorkTime> voteStationWorkTimes = new HashMap<>();
     private static HashMap<Voter, Integer> voterCounts = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
 
-        String fileName = "src/main/resources/data-18M.xml";
+        String fileName = "src/main/resources/data-0.2M.xml";
 
         System.out.println("Sax Parser:");
+
         long usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
         XMLHandler handler = new XMLHandler();
@@ -32,7 +39,9 @@ public class Loader {
         parser.parse(new File(fileName), handler);
         handler.printDuplicatedVoters();
         usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() - usage;
+
         System.out.println("Используемая память при SAX парсере: " + usage);
+
 
         System.out.println("Dom parser:");
 

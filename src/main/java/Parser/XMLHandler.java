@@ -1,7 +1,13 @@
+package Parser;
+
+import Connection.DBConnection;
+import Core.Voter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +18,7 @@ public class XMLHandler extends DefaultHandler {
     private Voter voter;
     private static SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
     private HashMap<Voter, Integer> voterCounts;
+    private Connection connection = DBConnection.getConnection();
 
     public XMLHandler() {
         voterCounts = new HashMap<>();
@@ -28,11 +35,12 @@ public class XMLHandler extends DefaultHandler {
                 int count = voterCounts.getOrDefault(voter, 0);
                 voterCounts.put(voter, count + 1);
             }
-
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
+
     }
+
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {

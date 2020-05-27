@@ -1,3 +1,5 @@
 /.idea
 /out
 *.iml
+/target
+/src/main/resources/data-1572M.xml
