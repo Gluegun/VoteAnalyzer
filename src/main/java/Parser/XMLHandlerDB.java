@@ -20,6 +20,7 @@ public class XMLHandlerDB extends DefaultHandler {
     private static final SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
     private final Connection connection = DBConnection.getConnection();
     private StringBuilder insertQuery = new StringBuilder();
+    private List<StringBuilder> queries = new ArrayList<>();
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -32,20 +33,32 @@ public class XMLHandlerDB extends DefaultHandler {
                 String date = birthDayFormat.format(voter.getBirthDay());
                 insertToStringBuilder(insertQuery, date);
 
+
+//                String sql = "INSERT INTO voter_count(name, birthDate, count)"
+//                        + "VALUES ('" + voter.getName() + "', '" + date + "', 1)" +
+//                        "ON DUPLICATE key UPDATE count = count + 1";
+//                connection.createStatement().execute(sql);
+
             }
 
-        } catch (ParseException ex) {
+        } catch (ParseException /*| SQLException*/ ex) {
             ex.printStackTrace();
         }
     }
 
     public void executeInsert() throws SQLException {
 
-        String sql = "INSERT INTO voter_count(name, birthDate, count)" +
-                "VALUES" + insertQuery.toString() +
-                "ON DUPLICATE KEY UPDATE count = count + 1";
-        connection.createStatement().execute(sql);
+        queries.add(insertQuery); // скидываем остатки стрингбилдера в список
+        insertQuery = null;
+        int count = 0;
 
+        for (StringBuilder query : queries) {
+            String sql = "INSERT INTO voter_count(name, birthDate, count)" +
+                    "VALUES" + query.toString() +
+                    "ON DUPLICATE KEY UPDATE count = count + 1";
+            connection.createStatement().execute(sql);
+            count++;        }
+        System.out.println("Total inserts: " + count);
     }
 
     private void insertToStringBuilder(StringBuilder builder, String date) {
@@ -60,6 +73,12 @@ public class XMLHandlerDB extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equals("voter")) {
+
+            if (insertQuery.length() > 250000) {
+                queries.add(insertQuery);
+                insertQuery = new StringBuilder();
+            }
+
             voter = null;
         }
     }

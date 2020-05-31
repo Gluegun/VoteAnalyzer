@@ -15,12 +15,9 @@ import java.sql.SQLException;
 public class DBLoader {
     public static void main(String[] args) throws SQLException, ParserConfigurationException, SAXException, IOException {
 
-        String fileName = "src/main/resources/data-18M.xml";
+        String fileName = "src/main/resources/data-1572M.xml";
         long start = System.currentTimeMillis();
         Connection connection = DBConnection.getConnection();
-
-        String setMaxAllowedPacket = "SET GLOBAL max_allowed_packet=16777216";
-        connection.createStatement().execute(setMaxAllowedPacket);
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
@@ -29,8 +26,6 @@ public class DBLoader {
         handler.executeInsert();
 
         System.out.println("Loading all data to DB took " + (System.currentTimeMillis() - start) + " ms");
-
-        DBConnection.printVoterCounts();
 
         connection.close();
 

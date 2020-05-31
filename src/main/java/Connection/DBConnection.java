@@ -8,9 +8,13 @@ import java.sql.SQLException;
 public class DBConnection {
     private static Connection connection;
 
-    private static String dbUrl = "jdbc:mysql://localhost:3306/learn?useUnicode=true&serverTimezone=Europe/Moscow&characterEncoding=UTF-8";
-    private static String dbUser = "root";
-    private static String dbPass = "testtest";
+    private static final String dbUrl = "jdbc:mysql://localhost:3306/learn?" +
+            "useUnicode=true&serverTimezone=Europe/Moscow" +
+            "&characterEncoding=UTF-8" +
+            "&rewriteBatchedStatements=true";
+
+    private static final String dbUser = "root";
+    private static final String dbPass = "testtest";
 
     public static Connection getConnection() {
         if (connection == null) {
@@ -22,8 +26,8 @@ public class DBConnection {
                         "name TINYTEXT NOT NULL, " +
                         "birthDate DATE NOT NULL, " +
                         "`count` INT NOT NULL, " +
-                        "PRIMARY KEY(id), " +
-                        "UNIQUE KEY name_date(name(50), birthDate))");
+                        "PRIMARY KEY(id))");
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
