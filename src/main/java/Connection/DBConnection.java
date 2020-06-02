@@ -43,7 +43,7 @@ public class DBConnection {
             DBConnection.getConnection().createStatement()
                     .execute("INSERT INTO voter_count(name, birthDate, `count`) VALUES('" +
                             name + "', '" + birthDay + "', 1), " +
-            "ON DUPLICATE KEY UPDATE `count` = `count` + 1");
+                            "ON DUPLICATE KEY UPDATE `count` = `count` + 1");
         } else {
             int id = rs.getInt("id");
             DBConnection.getConnection().createStatement()
@@ -58,6 +58,29 @@ public class DBConnection {
         while (rs.next()) {
             System.out.println("\t" + rs.getString("name") + " (" +
                     rs.getString("birthDate") + ") - " + rs.getInt("count"));
+        }
+    }
+
+    public static void printVoterCountsForSAXParser() {
+
+        String createTable = "Create table double_voters (name Tinytext, count INT)";
+        String insert = "INSERT INTO double_voters (name, count) " +
+                "SELECT name, count(*) from learn.voter_count group by name having count(*) > 1 order by count(*) desc";
+
+        String select = "SELECT name, count FROM double_voters";
+
+        try {
+            connection.createStatement().execute("DROP TABLE IF EXISTS double_voters");
+            connection.createStatement().execute(createTable);
+            connection.createStatement().execute(insert);
+
+            ResultSet rs = connection.createStatement().executeQuery(select);
+
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("name") + " " + rs.getInt("count"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 }

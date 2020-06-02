@@ -50,15 +50,14 @@ public class XMLHandlerDB extends DefaultHandler {
 
         queries.add(insertQuery); // скидываем остатки стрингбилдера в список
         insertQuery = null;
-        int count = 0;
+
 
         for (StringBuilder query : queries) {
             String sql = "INSERT INTO voter_count(name, birthDate, count)" +
                     "VALUES" + query.toString() +
                     "ON DUPLICATE KEY UPDATE count = count + 1";
             connection.createStatement().execute(sql);
-            count++;        }
-        System.out.println("Total inserts: " + count);
+        }
     }
 
     private void insertToStringBuilder(StringBuilder builder, String date) {
