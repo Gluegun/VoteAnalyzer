@@ -1,4 +1,4 @@
-package Connection;
+package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,15 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static Connection connection;
-
     private static final String dbUrl = "jdbc:mysql://localhost:3306/learn?" +
             "useUnicode=true&serverTimezone=Europe/Moscow" +
             "&characterEncoding=UTF-8" +
             "&rewriteBatchedStatements=true";
-
     private static final String dbUser = "root";
-    private static final String dbPass = "testtest";
+    private static final String dbPass = "rootroot";
+    private static Connection connection;
 
     public static Connection getConnection() {
         if (connection == null) {

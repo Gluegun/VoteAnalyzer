@@ -1,12 +1,12 @@
-package App;
+package app;
 
+import core.Voter;
+import core.WorkTime;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import Core.*;
-import Parser.XMLHandler;
-
+import parser.XMLHandler;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,15 +18,15 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class Loader {
-    private static SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
-    private static SimpleDateFormat visitDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    private static final SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
+    private static final SimpleDateFormat visitDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
-    private static HashMap<Integer, Core.WorkTime> voteStationWorkTimes = new HashMap<>();
-    private static HashMap<Voter, Integer> voterCounts = new HashMap<>();
+    private static final HashMap<Integer, core.WorkTime> voteStationWorkTimes = new HashMap<>();
+    private static final HashMap<Voter, Integer> voterCounts = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
 
-        String fileName = "src/main/resources/data-0.2M.xml";
+        String fileName = "src/main/resources/data-1M.xml";
 
         System.out.println("Sax Parser:");
 

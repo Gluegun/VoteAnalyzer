@@ -1,8 +1,8 @@
-package App;
+package app;
 
-import Connection.DBConnection;
-import Parser.XMLHandlerDB;
+import connection.DBConnection;
 import org.xml.sax.SAXException;
+import parser.XMLHandlerDB;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -10,15 +10,13 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBLoader {
-    
+
     public static void main(String[] args) throws SQLException, ParserConfigurationException, SAXException, IOException {
 
-        String fileName = "src/main/resources/data-1572M.xml";
+        String fileName = "src/main/resources/data-18M.xml";
 
         long start = System.currentTimeMillis();
         Connection connection = DBConnection.getConnection();
@@ -36,9 +34,6 @@ public class DBLoader {
         System.out.println("Select necessary information took " + (System.currentTimeMillis() - start) + " ms");
 
         connection.close();
-
-
-
 
 
     }

@@ -1,7 +1,7 @@
-package Parser;
+package parser;
 
-import Connection.DBConnection;
-import Core.Voter;
+import connection.DBConnection;
+import core.Voter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -16,9 +16,9 @@ import java.util.List;
 
 public class XMLHandlerDB extends DefaultHandler {
 
-    private Voter voter;
     private static final SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
     private final Connection connection = DBConnection.getConnection();
+    private Voter voter;
     private StringBuilder insertQuery = new StringBuilder();
     private List<StringBuilder> queries = new ArrayList<>();
 
